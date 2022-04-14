@@ -1,5 +1,5 @@
 {
-    "name": "essa/api_tool_kit",
+    "name": "gio-dev/api_tool_kit",
     "description": "set of tools to build an api with laravel",
     "keywords": [
         "laravel",
@@ -16,13 +16,17 @@
         {
             "name": "Ahmed Esa",
             "email": "ahmedesa6120@gmail.com"
+        },
+        {
+            "name": "Giovan Dias",
+            "email": "giovan.bnu@gmail.com"
         }
     ],
     "require": {
         "php": "^7.4|^8.0",
         "illuminate/support": "^6.20.13|7.30.4|^8.22.2"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
