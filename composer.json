@@ -4,6 +4,9 @@
     "keywords": [
         "laravel",
         "api",
+        "modules",
+        "services",
+        "repositories",
         "filters",
         "dynamic-pagination",
         "tools",
