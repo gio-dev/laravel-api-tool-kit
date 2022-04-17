@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace @if('modules')Modules\Dummy\@endif('modules')App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 @if('filter')use App\Filters\DummyFilters;

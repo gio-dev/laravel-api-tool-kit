@@ -1,0 +1,26 @@
+<?php
+
+namespace @if('modules')Modules\Dummy\@endif('modules')App\Repositories;
+
+use App\Models\Dummy;
+use Essa\APIToolKit\Repository\BaseRepository;
+use App\Repositories\Contracts\DummyRepositoryInteface;
+
+/**
+ * Class DummyRepository
+ * @package @if('modules')Modules\Dummy\@endif('modules')App\Repositories
+
+ */
+class DummyRepository implements DummyRepositoryInteface
+{
+    use BaseRepository;
+    /**
+     * Dummy constructor.
+     * @param Dummy $dummy
+     */
+    public function __construct(Dummy $dummy)
+    {
+        $this->setEntityClass($dummy);
+    }
+
+}

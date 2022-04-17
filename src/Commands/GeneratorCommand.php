@@ -18,6 +18,7 @@ class GeneratorCommand extends Command
 
     protected array $all_options = [
         'controller',
+        'service-repository',
         'request',
         'resource',
         'migration',
@@ -101,6 +102,7 @@ class GeneratorCommand extends Command
 
     protected $signature = 'api:generate {model}
     {--m|migration}
+    {--sr|service-repository}
     {--c|controller}
     {--R|request}
     {--r|resource}
@@ -108,6 +110,7 @@ class GeneratorCommand extends Command
     {--f|factory}
     {--F|filter}
     {--t|test}
+    {--M|module}
     {--routes}
     {--soft-delete}
     ';
@@ -133,52 +136,149 @@ class GeneratorCommand extends Command
 
         $this->model = $model;
 
+        $this->setOption('not-service', ($this->option('service-repository') ? false: true));
+
         $this->getUserChoices();
 
-        $this->createModel();
 
-        if ($this->option('controller')) {
-            $this->createController();
+
+        if ($this->option('module')) {
+
+            $this->createModule();
+
+            $this->createModelModule();
+
+            if ($this->option('controller')) {
+                $this->createControllerModule();
+            }
+
+            if ($this->option('service-repository')) {
+                $this->createServiceRepositoryModule();
+            }
+
+            if ($this->option('filter')) {
+                $this->createFilterModule();
+            }
+
+            if ($this->option('resource')) {
+                $this->createResourceModule();
+            }
+
+            if ($this->option('test')) {
+                $this->createTestModule();
+            }
+
+            if ($this->option('migration')) {
+                $this->createMigrationModule();
+            }
+
+            if ($this->option('factory')) {
+                $this->createFactoryModule();
+            }
+
+            if ($this->option('request')) {
+                $this->createRequestModule();
+            }
+
+            if ($this->option('seeder')) {
+                $this->createSeederModule();
+            }
+
+
+            if ($this->option('routes')) {
+                $this->filesystem->append(
+                    module_path("{$this->model}", "routes/api.php"),
+                    $this->getTemplate('routesModule')
+                );
+            }
+        } else {
+            $this->createModel();
+
+            if ($this->option('controller')) {
+                $this->createController();
+            }
+
+            if ($this->option('service-repository')) {
+                $this->createServiceRepository();
+            }
+
+            if ($this->option('filter')) {
+                $this->createFilter();
+            }
+
+            if ($this->option('resource')) {
+                $this->createResources();
+            }
+
+            if ($this->option('test')) {
+                $this->createTest();
+            }
+
+            if ($this->option('migration')) {
+                $this->createMigration();
+            }
+
+            if ($this->option('factory')) {
+                $this->createFactory();
+            }
+
+            if ($this->option('request')) {
+                $this->createRequest();
+            }
+
+            if ($this->option('seeder')) {
+                $this->createSeeder();
+            }
+
+            if ($this->option('routes')) {
+                $this->filesystem->append(
+                    base_path('routes/api.php'),
+                    $this->getTemplate('routes')
+                );
+            }
         }
 
-        if ($this->option('filter')) {
-            $this->createFilter();
-        }
 
-        if ($this->option('resource')) {
-            $this->createResources();
-        }
-
-        if ($this->option('test')) {
-            $this->createTest();
-        }
-
-        if ($this->option('migration')) {
-            $this->createMigration();
-        }
-
-        if ($this->option('factory')) {
-            $this->createFactory();
-        }
-
-        if ($this->option('request')) {
-            $this->createRequest();
-        }
-
-        if ($this->option('seeder')) {
-            $this->createSeeder();
-        }
-
-        if ($this->option('routes')) {
-            $this->filesystem->append(
-                base_path('routes/api.php'),
-                $this->getTemplate('routes')
-            );
-        }
 
         $this->info('Module created successfully!');
     }
 
+    private function createServiceRepositoryModule(): void
+    {
+        if (! file_exists(module_path("{$this->model}", "App/Repositories/Contracts"))) {
+            $this->filesystem->makeDirectory(module_path("{$this->model}", "App/Repositories/Contracts"));
+        }
+
+        file_put_contents(module_path("{$this->model}", "App/Repositories/{$this->model}Repository.php"), $this->getTemplate('DummyRepository'));
+        file_put_contents(module_path("{$this->model}", "App/Repositories/Contracts/{$this->model}RepositoryInterface.php"), $this->getTemplate('DummyRepositoryInterface'));
+        file_put_contents(module_path("{$this->model}", "App/Services/{$this->model}Controller.php"), $this->getTemplate('DummyServices'));
+    }
+    private function createServiceRepository(): void
+    {
+        if (! file_exists(app_path("/Repositories"))) {
+            $this->filesystem->makeDirectory(app_path("/Repositories"));
+        }
+        if (! file_exists(app_path("/Repositories/Contracts"))) {
+            $this->filesystem->makeDirectory(app_path("/Repositories/Contracts"));
+        }
+        if (! file_exists(app_path("/Services"))) {
+            $this->filesystem->makeDirectory(app_path("/Services"));
+        }
+
+        file_put_contents(app_path("Repositories/{$this->model}Repository.php"), $this->getTemplate('DummyRepository'));
+        file_put_contents(app_path("Repositories/Contracts/{$this->model}RepositoryInterface.php"), $this->getTemplate('DummyRepositoryInterface'));
+        file_put_contents(app_path("Services/{$this->model}Controller.php"), $this->getTemplate('DummyServices'));
+    }
+
+
+    private function createControllerModule(): void
+    {
+        if (! file_exists(module_path("{$this->model}", 'App/Http/Controllers/API'))) {
+            $this->filesystem->makeDirectory(module_path("{$this->model}", 'App/Http/Controllers/API'));
+        }
+
+        file_put_contents(module_path("{$this->model}", "Http/Controllers/API/{$this->model}Controller.php"), $this->getTemplate('DummyController'));
+    }
     private function createController(): void
     {
         if (! file_exists(app_path("/Http/Controllers/API"))) {
@@ -188,16 +288,32 @@ class GeneratorCommand extends Command
         file_put_contents(app_path("Http/Controllers/API/{$this->model}Controller.php"), $this->getTemplate('DummyController'));
     }
 
+    private function createModelModule(): void
+    {
+        file_put_contents(module_path("{$this->model}","App/Models/{$this->model}.php"), $this->getTemplate('Dummy'));
+    }
     private function createModel(): void
     {
         file_put_contents(app_path("Models/{$this->model}.php"), $this->getTemplate('Dummy'));
     }
 
+    private function createTestModule(): void
+    {
+        file_put_contents(module_path("{$this->model}", "tests/Feature/{$this->model}Test.php"), $this->getTemplate('DummyTest'));
+    }
     private function createTest(): void
     {
         file_put_contents(base_path("tests/Feature/{$this->model}Test.php"), $this->getTemplate('DummyTest'));
     }
 
+    private function createFilterModule(): void
+    {
+        if (! file_exists(module_path("{$this->model}", "App/Filters"))) {
+            $this->filesystem->makeDirectory(module_path("{$this->model}", "App/Filters"));
+        }
+
+        file_put_contents(module_path("{$this->model}", "App/Filters/{$this->model}Filters.php"), $this->getTemplate('DummyFilters'));
+    }
     private function createFilter(): void
     {
         if (! file_exists(app_path("/Filters"))) {
@@ -207,6 +323,23 @@ class GeneratorCommand extends Command
         file_put_contents(app_path("Filters/{$this->model}Filters.php"), $this->getTemplate('DummyFilters'));
     }
 
+    private function createRoute(): void
+    {
+        file_put_contents(module_path("{$this->model}", "routes/api.php"), $this->getTemplate('routeModule'));
+    }
+
+    private function createResourceModule(): void
+    {
+
+        if (! file_exists(module_path("{$this->model}", "App/Http/Resources/" . $this->model))) {
+            $this->filesystem->makeDirectory(module_path("{$this->model}", "App/Http/Resources/" . $this->model));
+        }
+
+        file_put_contents(
+            module_path("{$this->model}", "App/Http/Resources/{$this->model}/{$this->model}Resource.php"),
+            $this->getTemplate('DummyResource')
+        );
+    }
     private function createResources(): void
     {
         if (! file_exists(app_path("/Http/Resources"))) {
@@ -223,6 +356,25 @@ class GeneratorCommand extends Command
         );
     }
 
+    private function createModule(): void
+    {
+//        if (!file_exists(base_path("Modules"))) {
+//            $this->filesystem->makeDirectory(base_path("Modules"));
+//        }
+        if (!file_exists(base_path("Modules/{$this->model}"))) {
+//            $this->filesystem->makeDirectory(base_path("Modules/{$this->model}"));
+            Artisan::call('module:make', ['name' => $this->model]);
+        }
+    }
+
+
+    private function createMigrationModule(): void
+    {
+        Artisan::call('module:make-migration', [
+            'name' => 'create_'. Str::plural(Str::snake($this->model)) .'_table',
+            'module' => $this->model
+        ]);
+    }
     private function createMigration(): void
     {
         Artisan::call('make:migration', [
@@ -230,6 +382,13 @@ class GeneratorCommand extends Command
         ]);
     }
 
+    private function createFactoryModule(): void
+    {
+        Artisan::call('module:make-factory', [
+            'name' => $this->model,
+            'module' => $this->model,
+        ]);
+    }
     private function createFactory(): void
     {
         Artisan::call('make:factory', [
@@ -238,6 +397,18 @@ class GeneratorCommand extends Command
         ]);
     }
 
+    private function createRequestModule(): void
+    {
+        Artisan::call('module:make-request', [
+            'name' => 'Create' . $this->model . 'Request',
+            'module' => $this->model,
+        ]);
+
+        Artisan::call('module:make-request', [
+            'name' => 'Update' . $this->model . 'Request',
+            'module' => $this->model,
+        ]);
+    }
     private function createRequest(): void
     {
         Artisan::call('make:request', [
@@ -249,6 +420,13 @@ class GeneratorCommand extends Command
         ]);
     }
 
+    private function createSeederModule(): void
+    {
+        Artisan::call('module:make-seeder', [
+            'name' => $this->model,
+            'module' => $this->model,
+        ]);
+    }
     private function createSeeder(): void
     {
         Artisan::call('make:seeder', [

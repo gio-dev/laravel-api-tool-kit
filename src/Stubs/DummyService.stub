@@ -1,0 +1,28 @@
+<?php
+
+namespace @if('modules')Modules\Dummy\@endif('modules')App\Services;
+
+use App\Repositories\Contracts\DummyRepositoryInteface;
+
+/**
+ * Class DummyService
+ * @package @if('modules')Modules\Dummy\@endif('modules')App\Services
+ */
+class DummyService extends BaseService
+{
+    /**
+     * @var DummyRepositoryInteface
+     */
+    protected DummyRepositoryInteface $dummyRepository;
+
+    /**
+     * DummyService constructor.
+     * @param DummyRepositoryInteface $dummyRepository
+     */
+    public function __construct(DummyRepositoryInteface $dummyRepository)
+    {
+        $this->dummyRepository = $dummyRepository;
+        $this->setBaseServiceClass($dummyRepository);
+    }
+
+}

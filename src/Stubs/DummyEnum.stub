@@ -1,6 +1,6 @@
 <?php
 
-namespace DummyNamespace;
+namespace @if('modules')Modules\Dummy\@endif('modules')DummyNamespace;
 
 use Essa\APIToolKit\Enum\Enum;
 

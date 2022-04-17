@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace @if('modules')Modules\Dummy\@endif('modules')App\Http\Controllers\API;
 
 use App\Models\Dummy;
 use Illuminate\Http\Request;
@@ -13,59 +13,105 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DummyController extends Controller
 {
-    public function __construct()
+
+    @if('service-repository')
+    /**
+     * @var DummyService
+     */
+    protected $dummyService;
+    @endif('service-repository')
+
+    public function __construct(@if('service-repository')DummyService $dummyService@endif('service-repository'))
     {
         $this->middleware(['auth:api']);
+        @if('service-repository')$this->dummyService = $dummyService;@endif('service-repository')
+
     }
 
     public function index()@if('resource'): AnonymousResourceCollection @endif('resource')
     {
+        @if('service-repository')
+        $dummies = $this->dummyService->findAll();
+        @endif('service-repository')
+        @if('not-service')
         $dummies = Dummy::@if('filter')useFilters()->@endif('filter')dynamicPaginate();
+        @endif('not-service')
 
         return @if('resource')DummyResource::collection(@endif('resource')$dummies@if('resource'))@endif('resource');
     }
 
     public function store(@if('request')CreateDummy@endif('request')Request $request): JsonResponse
     {
+        @if('service-repository')
+        $dummy = $this->dummyService->storeNew($request->all());
+        @endif('service-repository')
+        @if('not-service')
         $dummy = Dummy::create($request->all());
-
+        @endif('not-service')
         return $this->responseCreated('Dummy created successfully', @if('resource')new DummyResource(@endif('resource')$dummy@if('resource'))@endif('resource'));
     }
 
-    public function show(Dummy $dummy): JsonResponse
+    public function show(@if('service-repository')$identity@endif('service-repository')@if('not-service')Dummy $dummy@endif('not-service')): JsonResponse
     {
+        @if('service-repository')
+        $dummy = $this->dummyService->findOneByIdentify($identity);
+        return $this->responseSuccess('Dummy found', new DummyResource($companies));
+        @endif('service-repository')
+        @if('not-service')
         return $this->responseSuccess(null, @if('resource')new DummyResource(@endif('resource')$dummy@if('resource'))@endif('resource'));
+        @endif('not-service')
+
     }
 
     public function update(@if('request')UpdateDummy@endif('request')Request $request, Dummy $dummy): JsonResponse
     {
+        @if('service-repository')
+        $company = $this->dummyService->changeByIdentify($identity, $request->all());
+        @endif('service-repository')
+        @if('not-service')
         $dummy->update($request->all());
-
+        @endif('not-service')
         return $this->responseSuccess('Dummy updated Successfully', @if('resource')new DummyResource(@endif('resource')$dummy@if('resource'))@endif('resource'));
     }
 
-    public function destroy(Dummy $dummy): JsonResponse
+    public function destroy(@if('service-repository')$identity@endif('service-repository')@if('not-service')Dummy $dummy@endif('not-service')): JsonResponse
     {
+        @if('service-repository')
+        $this->dummyService->deleteByIdentify($identity);
+        @endif('service-repository')
+        @if('not-service')
         $dummy->delete();
-
+        @endif('not-service')
         return $this->responseDeleted();
     }
 @if('soft-delete')
     public function restore($id): JsonResponse
     {
+        @if('service-repository')
         $dummy = Dummy::onlyTrashed()->findOrFail($id);
 
         $dummy->restore();
+        @endif('service-repository')
+        @if('not-service')
+        $dummy = Dummy::onlyTrashed()->findOrFail($id);
 
+        $dummy->restore();
+        @endif('not-service')
         return $this->responseSuccess('Dummy restored Successfully.');
     }
 
     public function permanentDelete($id): JsonResponse
     {
+        @if('service-repository')
         $dummy = Dummy::withTrashed()->findOrFail($id);
 
         $dummy->forceDelete();
+        @endif('service-repository')
+        @if('not-service')
+        $dummy = Dummy::withTrashed()->findOrFail($id);
 
+        $dummy->forceDelete();
+        @endif('not-service')
         return $this->responseDeleted();
     }
 @endif('soft-delete')

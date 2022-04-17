@@ -15,6 +15,7 @@ return [
     'default_generates' => [
         'seeder',
         'controller',
+        'service-repository',
         'request',
         'resource',
         'factory',
@@ -22,6 +23,7 @@ return [
         'filter',
         'test',
         'routes',
+        'module',
     ],
     /*
     |--------------------------------------------------------------------------

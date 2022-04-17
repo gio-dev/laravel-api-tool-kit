@@ -29,6 +29,8 @@ class APIToolKitServiceProvider extends ServiceProvider
 
     public function AddConfigFiles(): void
     {
+        $this->registerRepositoryProviders();
+        $this->registerResourceCustom();
         $this->mergeConfigFrom(__DIR__ . '/../config/api-tool-kit.php', 'api-tool-kit');
 
         if ($this->app->runningInConsole() && function_exists('config_path')) {
@@ -48,6 +50,30 @@ class APIToolKitServiceProvider extends ServiceProvider
                 GeneratePermissions::class,
                 MakeFilterCommand::class
             ]);
+        }
+    }
+
+    public function registerResourceCustom(): void
+    {
+        if ($this->app->runningInConsole()) {
+            if (! file_exists(app_path("/Core/Resources"))) {
+                $this->filesystem->makeDirectory(app_path("/Core/Resources"));
+            }
+            $this->publishes([
+                __DIR__ . '/stubs/AppJsonResource.stub' => app_path('Core/Resources/AppJsonResource.php'),
+            ], 'app-json-reso');
+            $this->publishes([
+                __DIR__ . '/stubs/AppAnonymousResourceCollection.stub' => app_path('Core/Resources/AppAnonymousResourceCollection.php'),
+            ], 'app-anony-json-reso');
+        }
+    }
+
+    public function registerRepositoryProviders(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/stubs/RepositoryServiceProvider.stub' => app_path('Providers/RepositoryServiceProvider.php'),
+            ], 'repositoryservice-provider');
         }
     }
 }

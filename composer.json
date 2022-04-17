@@ -27,13 +27,15 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "illuminate/support": "^6.20.13|7.30.4|^8.22.2"
+        "illuminate/support": "^6.20.13|7.30.4|^8.22.2",
+        "nwidart/laravel-modules": "^8.3"
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Essa\\APIToolKit\\": "src/"
+            "Essa\\APIToolKit\\": "src/",
+            "Modules\\": "Modules/"
         }
     },
     "extra": {

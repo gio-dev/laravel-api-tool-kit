@@ -1,0 +1,3 @@
+use @if('modules')Modules\Dummy\@endif('modules')App\Repositories\DummyRepository;
+use @if('modules')Modules\Dummy\@endif('modules')App\Repositories\Contracts\DummyRepository;
+

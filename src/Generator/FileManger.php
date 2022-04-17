@@ -33,6 +33,9 @@ trait FileManger
             'request',
             'resource',
             'filter',
+            'module',
+            'service-repository',
+            'not-service',
         ]);
     }
 

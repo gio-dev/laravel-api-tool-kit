@@ -1,0 +1,8 @@
+
+/*===========================
+=           dummies           =
+=============================*/
+
+require __DIR__.'/../Module/Dummy/web/dummy.php';
+
+/*=====  End of dummies   ======*/

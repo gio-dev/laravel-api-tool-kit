@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Dummy;
+namespace @if('modules')Modules\Dummy\@endif('modules')App\Http\Resources\Dummy;
 
+use App\Core\Resources\AppJsonResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DummyResource extends JsonResource
+class DummyResource extends AppJsonResource
 {
     public function toArray($request): array
     {
