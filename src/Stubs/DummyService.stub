@@ -2,7 +2,7 @@
 
 namespace @if('modules')Modules\Dummy\@endif('modules')App\Services;
 
-use App\Repositories\Contracts\DummyRepositoryInteface;
+use @if('modules')Modules\Dummy\@endif('modules')App\Repositories\Contracts\DummyRepositoryInteface;
 
 /**
  * Class DummyService

@@ -154,6 +154,7 @@ class GeneratorCommand extends Command
 
             if ($this->option('service-repository')) {
                 $this->createServiceRepositoryModule();
+                $this->publishRepositoryServiceProvider();
             }
 
             if ($this->option('filter')) {
@@ -200,6 +201,7 @@ class GeneratorCommand extends Command
 
             if ($this->option('service-repository')) {
                 $this->createServiceRepository();
+                $this->publishRepositoryServiceProvider();
             }
 
             if ($this->option('filter')) {
@@ -432,6 +434,18 @@ class GeneratorCommand extends Command
         Artisan::call('make:seeder', [
             'name' => $this->model . 'Seeder',
         ]);
+    }
+
+    private function publishRepositoryServiceProvider(): void
+    {
+        $this->filesystem->replaceInFile(
+            '//Register-Use-Bind//',
+            "//Register-Use-Bind//\n;".$this->getTemplate('bind-use-repository'),
+            app_path("Providers/RepositoryServiceProvider.php"));
+        $this->filesystem->replaceInFile(
+            '//Register-Bind//',
+            "//Register-Bind//\n;".$this->getTemplate('bind-use-repository'),
+            app_path("Providers/RepositoryServiceProvider.php"));
     }
 
     private function isReservedName($name): bool

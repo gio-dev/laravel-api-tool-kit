@@ -2,9 +2,9 @@
 
 namespace @if('modules')Modules\Dummy\@endif('modules')App\Repositories;
 
-use App\Models\Dummy;
+use @if('modules')Modules\Dummy\@endif('modules')App\Models\Dummy;
 use Essa\APIToolKit\Repository\BaseRepository;
-use App\Repositories\Contracts\DummyRepositoryInteface;
+use @if('modules')Modules\Dummy\@endif('modules')App\Repositories\Contracts\DummyRepositoryInteface;
 
 /**
  * Class DummyRepository

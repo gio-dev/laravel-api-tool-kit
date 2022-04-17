@@ -42,6 +42,7 @@
         "laravel": {
             "providers": [
                 "Essa\\APIToolKit\\APIToolKitServiceProvider",
+                "App\\Providers\\RepositoryServiceProvider",
                 "Essa\\APIToolKit\\MacroServiceProvider"
             ]
         }

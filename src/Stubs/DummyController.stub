@@ -2,7 +2,7 @@
 
 namespace @if('modules')Modules\Dummy\@endif('modules')App\Http\Controllers\API;
 
-use App\Models\Dummy;
+use @if('modules')Modules\Dummy\@endif('modules')App\Models\Dummy;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
