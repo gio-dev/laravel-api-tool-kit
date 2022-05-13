@@ -1,15 +1,16 @@
 <?php
 
-namespace @if('modules')Modules\Dummy\@endif('modules')App\Http\Controllers\API;
+namespace @if('module')Modules\Dummy\@endif('module')App\Http\Controllers\API;
 
-use @if('modules')Modules\Dummy\@endif('modules')App\Models\Dummy;
+use @if('module')Modules\Dummy\@endif('module')App\Models\Dummy;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-@if('resource')use App\Http\Resources\Dummy\DummyResource;@endif('resource')
-@if('request')use App\Http\Requests\Dummy\CreateDummyRequest;@endif('request')
-@if('request')use App\Http\Requests\Dummy\UpdateDummyRequest;@endif('request')
+@if('resource')use @if('module')Modules\Dummy\@endif('module')App\Http\Resources\Dummy\DummyResource;@endif('resource')
+@if('request')use @if('module')Modules\Dummy\@endif('module')App\Http\Requests\Dummy\CreateDummyRequest;@endif('request')
+@if('request')use @if('module')Modules\Dummy\@endif('module')App\Http\Requests\Dummy\UpdateDummyRequest;@endif('request')
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+@if('service-repository')use @if('module')Modules\Dummy\@endif('module')App\Services\DummyService;@endif('service-repository')
 
 class DummyController extends Controller
 {
@@ -31,7 +32,7 @@ class DummyController extends Controller
     public function index()@if('resource'): AnonymousResourceCollection @endif('resource')
     {
         @if('service-repository')
-        $dummies = $this->dummyService->findAll();
+        $dummies = $this->dummyService->search();
         @endif('service-repository')
         @if('not-service')
         $dummies = Dummy::@if('filter')useFilters()->@endif('filter')dynamicPaginate();
@@ -63,10 +64,10 @@ class DummyController extends Controller
 
     }
 
-    public function update(@if('request')UpdateDummy@endif('request')Request $request, Dummy $dummy): JsonResponse
+    public function update(@if('request')UpdateDummy@endif('request')Request $request, @if('service-repository')$identity@endif('service-repository')@if('not-service')Dummy $dummy@endif('not-service')): JsonResponse
     {
         @if('service-repository')
-        $company = $this->dummyService->changeByIdentify($identity, $request->all());
+        $dummy = $this->dummyService->changeByIdentify($identity, $request->all());
         @endif('service-repository')
         @if('not-service')
         $dummy->update($request->all());

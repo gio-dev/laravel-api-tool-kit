@@ -71,4 +71,51 @@ trait BaseService
         return $this->baseService->findAll();
     }
 
+    /**
+     * @param string $uuid
+     * @return mixed
+     */
+    public function findOneByUuid(string $uuid){
+        return $this->baseService->findOneByUuid($uuid);
+    }
+
+    /**
+     * @param string $uuid
+     * @param array $data
+     * @return mixed
+     */
+    public function changeByUuid(string $uuid, array $data){
+        return $this->baseService->updateByUuid($uuid, $data);
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function deleteByUuid(string $uuid){
+        return $this->baseService->deleteByUuid($uuid);
+    }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function findOneById(int $id){
+        return $this->baseService->findOneById($id);
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
+    public function changeById(int $id, array $data){
+        return $this->baseService->updateById($id, $data);
+    }
+
+    /**
+     * @param int $id
+     */
+    public function deleteById(int $id){
+        return $this->baseService->deleteById($id);
+    }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace @if('modules')Modules\Dummy\@endif('modules')Tests\Feature;
+namespace @if('module')Modules\Dummy\@endif('module')Tests\Feature;
 
 use Tests\TestCase;
-use @if('modules')Modules\Dummy\@endif('modules')App\Models\User;
-use @if('modules')Modules\Dummy\@endif('modules')App\Models\Dummy;
+use @if('module')Modules\Dummy\@endif('module')App\Models\User;
+use @if('module')Modules\Dummy\@endif('module')App\Models\Dummy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DummyTest extends TestCase

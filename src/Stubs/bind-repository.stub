@@ -1,10 +1,10 @@
 
-/*===========================
-=           dummies           =
-=============================*/
+    /*===========================
+    =           dummies           =
+    =============================*/
 
-$this->app->bind(
-    DummyRepositoryInterface::class,
-    DummyRepository::class
-);
-/*=====  End of dummies   ======*/
+    $this->app->bind(
+        DummyRepositoryInterface::class,
+        DummyRepository::class
+    );
+    /*=====  End of dummies   ======*/

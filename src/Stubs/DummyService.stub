@@ -1,25 +1,26 @@
 <?php
 
-namespace @if('modules')Modules\Dummy\@endif('modules')App\Services;
+namespace @if('module')Modules\Dummy\@endif('module')App\Services;
 
-use @if('modules')Modules\Dummy\@endif('modules')App\Repositories\Contracts\DummyRepositoryInteface;
-
+use @if('module')Modules\Dummy\@endif('module')App\Repositories\Contracts\DummyRepositoryInterface;
+use Essa\APIToolKit\Services\BaseService;
 /**
  * Class DummyService
- * @package @if('modules')Modules\Dummy\@endif('modules')App\Services
+ * @package @if('module')Modules\Dummy\@endif('module')App\Services
  */
-class DummyService extends BaseService
+class DummyService
 {
+    use BaseService;
     /**
-     * @var DummyRepositoryInteface
+     * @var DummyRepositoryInterface
      */
-    protected DummyRepositoryInteface $dummyRepository;
+    protected $dummyRepository;
 
     /**
      * DummyService constructor.
-     * @param DummyRepositoryInteface $dummyRepository
+     * @param DummyRepositoryInterface $dummyRepository
      */
-    public function __construct(DummyRepositoryInteface $dummyRepository)
+    public function __construct(DummyRepositoryInterface $dummyRepository)
     {
         $this->dummyRepository = $dummyRepository;
         $this->setBaseServiceClass($dummyRepository);

@@ -21,7 +21,7 @@ trait BaseRepository
     protected $identify;
 
     /**
-     * @return mixed
+     * @return Model
      */
     public function getEntityClass()
     {
@@ -34,6 +34,22 @@ trait BaseRepository
     public function setEntityClass(Model $model)
     {
         $this->entity = $model;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentify()
+    {
+        return $this->identify;
+    }
+
+    /**
+     * @param string $identify
+     */
+    public function setIdentify(string $identify)
+    {
+        $this->identify = $identify;
     }
 
     /**

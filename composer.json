@@ -1,5 +1,5 @@
 {
-    "name": "gio-dev/api_tool_kit",
+    "name": "wtek/laravel-api-tools-kit",
     "description": "set of tools to build an api with laravel",
     "keywords": [
         "laravel",
@@ -12,8 +12,6 @@
         "tools",
         "api-generator"
     ],
-    "homepage": "https://github.com/ahmedesa/laravel-api-tool-kit",
-    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -30,13 +28,17 @@
         "illuminate/support": "^6.20.13|7.30.4|^8.22.2",
         "nwidart/laravel-modules": "^8.3"
     },
-    "minimum-stability": "stable",
-    "prefer-stable": true,
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Essa\\APIToolKit\\": "src/",
             "Modules\\": "Modules/"
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@php artisan vendor:publish --tag=repositoryservice-provider"
+        ]
     },
     "extra": {
         "laravel": {
@@ -45,6 +47,9 @@
                 "App\\Providers\\RepositoryServiceProvider",
                 "Essa\\APIToolKit\\MacroServiceProvider"
             ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0.4"
         }
     }
 }

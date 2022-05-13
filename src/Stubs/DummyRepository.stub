@@ -1,17 +1,17 @@
 <?php
 
-namespace @if('modules')Modules\Dummy\@endif('modules')App\Repositories;
+namespace @if('module')Modules\Dummy\@endif('module')App\Repositories;
 
-use @if('modules')Modules\Dummy\@endif('modules')App\Models\Dummy;
+use @if('module')Modules\Dummy\@endif('module')App\Models\Dummy;
 use Essa\APIToolKit\Repository\BaseRepository;
-use @if('modules')Modules\Dummy\@endif('modules')App\Repositories\Contracts\DummyRepositoryInteface;
+use @if('module')Modules\Dummy\@endif('module')App\Repositories\Contracts\DummyRepositoryInterface;
 
 /**
  * Class DummyRepository
- * @package @if('modules')Modules\Dummy\@endif('modules')App\Repositories
+ * @package @if('module')Modules\Dummy\@endif('module')App\Repositories
 
  */
-class DummyRepository implements DummyRepositoryInteface
+class DummyRepository implements DummyRepositoryInterface
 {
     use BaseRepository;
     /**

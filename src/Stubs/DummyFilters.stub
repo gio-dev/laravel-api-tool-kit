@@ -1,6 +1,6 @@
 <?php
 
-namespace @if('modules')Modules\Dummy\@endif('modules')App\Filters;
+namespace @if('module')Modules\Dummy\@endif('module')App\Filters;
 
 use Essa\APIToolKit\Filters\QueryFilters;
 

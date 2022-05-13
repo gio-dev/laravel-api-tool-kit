@@ -1,6 +1,6 @@
 <?php
 
-namespace @if('modules')Modules\Dummy\@endif('modules')DummyNamespace;
+namespace @if('module')Modules\Dummy\@endif('module')DummyNamespace;
 
 class DummyClass
 {

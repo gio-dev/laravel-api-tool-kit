@@ -2,6 +2,7 @@
 
 namespace Essa\APIToolKit;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 use Essa\APIToolKit\Commands\MakeEnumCommand;
 use Essa\APIToolKit\Commands\GeneratorCommand;
@@ -18,6 +19,8 @@ class APIToolKitServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerRepositoryProviders();
+        $this->registerResourceCustom();
     }
 
     public function boot()
@@ -29,8 +32,6 @@ class APIToolKitServiceProvider extends ServiceProvider
 
     public function AddConfigFiles(): void
     {
-        $this->registerRepositoryProviders();
-        $this->registerResourceCustom();
         $this->mergeConfigFrom(__DIR__ . '/../config/api-tool-kit.php', 'api-tool-kit');
 
         if ($this->app->runningInConsole() && function_exists('config_path')) {
@@ -57,13 +58,15 @@ class APIToolKitServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             if (! file_exists(app_path("/Core/Resources"))) {
-                $this->filesystem->makeDirectory(app_path("/Core/Resources"));
+//                $this->filesystem->makeDirectory(app_path("/Core/Resources"));
+                File::makeDirectory(app_path("/Core/Resources"), 0775, true, true);
             }
+            
             $this->publishes([
-                __DIR__ . '/stubs/AppJsonResource.stub' => app_path('Core/Resources/AppJsonResource.php'),
+                __DIR__ . '\Stubs\AppJsonResource.stubs' => app_path('Core/Resources/AppJsonResource.php'),
             ], 'app-json-reso');
             $this->publishes([
-                __DIR__ . '/stubs/AppAnonymousResourceCollection.stub' => app_path('Core/Resources/AppAnonymousResourceCollection.php'),
+                __DIR__ . '/Stubs/AppAnonymousResourceCollection.stubs' => app_path('Core/Resources/AppAnonymousResourceCollection.php'),
             ], 'app-anony-json-reso');
         }
     }

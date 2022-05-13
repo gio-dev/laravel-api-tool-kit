@@ -27,6 +27,7 @@ class GeneratorCommand extends Command
         'filter',
         'test',
         'routes',
+        'module',
     ];
 
     protected array $reservedNames = [
@@ -136,11 +137,9 @@ class GeneratorCommand extends Command
 
         $this->model = $model;
 
-        $this->setOption('not-service', ($this->option('service-repository') ? false: true));
+        $this->addOption('not-service', ($this->option('service-repository') ? false: true));
 
         $this->getUserChoices();
-
-
 
         if ($this->option('module')) {
 
@@ -253,7 +252,7 @@ class GeneratorCommand extends Command
 
         file_put_contents(module_path("{$this->model}", "App/Repositories/{$this->model}Repository.php"), $this->getTemplate('DummyRepository'));
         file_put_contents(module_path("{$this->model}", "App/Repositories/Contracts/{$this->model}RepositoryInterface.php"), $this->getTemplate('DummyRepositoryInterface'));
-        file_put_contents(module_path("{$this->model}", "App/Services/{$this->model}Controller.php"), $this->getTemplate('DummyServices'));
+        file_put_contents(module_path("{$this->model}", "App/Services/{$this->model}Service.php"), $this->getTemplate('DummyService'));
     }
     private function createServiceRepository(): void
     {
@@ -269,7 +268,7 @@ class GeneratorCommand extends Command
 
         file_put_contents(app_path("Repositories/{$this->model}Repository.php"), $this->getTemplate('DummyRepository'));
         file_put_contents(app_path("Repositories/Contracts/{$this->model}RepositoryInterface.php"), $this->getTemplate('DummyRepositoryInterface'));
-        file_put_contents(app_path("Services/{$this->model}Controller.php"), $this->getTemplate('DummyServices'));
+        file_put_contents(app_path("Services/{$this->model}Service.php"), $this->getTemplate('DummyService'));
     }
 
 
@@ -279,7 +278,7 @@ class GeneratorCommand extends Command
             $this->filesystem->makeDirectory(module_path("{$this->model}", 'App/Http/Controllers/API'));
         }
 
-        file_put_contents(module_path("{$this->model}", "Http/Controllers/API/{$this->model}Controller.php"), $this->getTemplate('DummyController'));
+        file_put_contents(module_path("{$this->model}", "App/Http/Controllers/API/{$this->model}Controller.php"), $this->getTemplate('DummyController'));
     }
     private function createController(): void
     {
@@ -365,7 +364,7 @@ class GeneratorCommand extends Command
 //        }
         if (!file_exists(base_path("Modules/{$this->model}"))) {
 //            $this->filesystem->makeDirectory(base_path("Modules/{$this->model}"));
-            Artisan::call('module:make', ['name' => $this->model]);
+            Artisan::call('module:make', ['name' => [$this->model]]);
         }
     }
 
@@ -402,12 +401,12 @@ class GeneratorCommand extends Command
     private function createRequestModule(): void
     {
         Artisan::call('module:make-request', [
-            'name' => 'Create' . $this->model . 'Request',
+            'name' => $this->model . '\Create' . $this->model . 'Request',
             'module' => $this->model,
         ]);
 
         Artisan::call('module:make-request', [
-            'name' => 'Update' . $this->model . 'Request',
+            'name' => $this->model . '\Update' . $this->model . 'Request',
             'module' => $this->model,
         ]);
     }
@@ -424,7 +423,7 @@ class GeneratorCommand extends Command
 
     private function createSeederModule(): void
     {
-        Artisan::call('module:make-seeder', [
+        Artisan::call('module:make-seed', [
             'name' => $this->model,
             'module' => $this->model,
         ]);
@@ -444,7 +443,7 @@ class GeneratorCommand extends Command
             app_path("Providers/RepositoryServiceProvider.php"));
         $this->filesystem->replaceInFile(
             '//Register-Bind//',
-            "//Register-Bind//\n;".$this->getTemplate('bind-use-repository'),
+            "//Register-Bind//\n;".$this->getTemplate('bind-repository'),
             app_path("Providers/RepositoryServiceProvider.php"));
     }
 

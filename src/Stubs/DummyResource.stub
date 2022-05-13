@@ -1,6 +1,6 @@
 <?php
 
-namespace @if('modules')Modules\Dummy\@endif('modules')App\Http\Resources\Dummy;
+namespace @if('module')Modules\Dummy\@endif('module')App\Http\Resources\Dummy;
 
 use App\Core\Resources\AppJsonResource;
 use Illuminate\Http\Resources\Json\JsonResource;

@@ -1,10 +1,10 @@
 <?php
 
-namespace @if('modules')Modules\Dummy\@endif('modules')App\Repositories\Contracts;
+namespace @if('module')Modules\Dummy\@endif('module')App\Repositories\Contracts;
 
 /**
- * Interface DummyRepositoryInteface
- * @package @if('modules')Modules\Dummy\@endif('modules')App\Repositories\Contracts
+ * Interface DummyRepositoryInterface
+ * @package @if('module')Modules\Dummy\@endif('module')App\Repositories\Contracts
  *
  * @method createNewEntity(array $data);
  * @method search();
@@ -22,6 +22,6 @@ namespace @if('modules')Modules\Dummy\@endif('modules')App\Repositories\Contract
  *
  */
 
-interface DummyRepositoryInteface
+interface DummyRepositoryInterface
 {
 }
